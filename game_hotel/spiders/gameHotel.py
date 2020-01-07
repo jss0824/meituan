@@ -23,6 +23,11 @@ import datetime
 import zlib
 
 
+def stringToDate(string):
+    dt =datetime.datetime.strptime(string, '%Y-%m-%d %H:%M:%S')
+    return dt
+
+
 def encode_token(hotel_name):
     ts = int(datetime.datetime.now().timestamp() * 1000)
     hotel_dict = {
@@ -68,41 +73,36 @@ class GamehotelSpider(scrapy.Spider):
     name = 'gameHotel'
 
     def start_requests(self):
+        sendToQDate_start = datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')
+        Date_string_start = stringToDate(sendToQDate_start)
+        start = int(Date_string_start.timestamp() * 1000)
 
-        # hotel_list = [
-        #                 'http://www.dianping.com/shop/1397563437',  # 铂宿
-        #                 'http://www.dianping.com/shop/122068331',  # 青岛YK电竞民宿(CBD理工大学店)
-        #                 'http://www.dianping.com/shop/130749657',  # 青岛YK电竞民宿(崂山大拇指广场店)
-        #                 'http://www.dianping.com/shop/946097146',  # TOP电竞酒店
-        #                 'http://www.dianping.com/shop/129009909',  # Teamwork电竞酒店
-        #                 'http://www.dianping.com/shop/129151291',  # 艾克威电竞酒店
-        #                 'http://www.dianping.com/shop/130000943',  # 玩家国度电竞酒店
-        #                 'http://www.dianping.com/shop/130287633',  # SOLO电竞酒店
-        #                 'http://www.dianping.com/shop/111805412'  # 铂悦电竞酒店(吾悦广场店)
-        #                 'https://www.meituan.com/jiudian/1694962376',   #online电竞酒店
-        #                 'https://www.meituan.com/jiudian/513149047/'    #Galaxy电竞民宿
-        #                   ]
+        sendToQDate_end = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d 00:00:00')
+        Date_string_end = stringToDate(sendToQDate_end)
+        end = int(Date_string_end.timestamp() * 1000)
+
+
         url_list = {
                     # 铂宿
-                    '铂宿电竞酒店': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=1397563437&start=1575993600000&end=1576080000000&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='
+                    '铂宿电竞酒店': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=1397563437&start={}&end={}&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='.format(start,end)
                     + encode_token('铂宿电竞酒店'),
-                    '青岛YK电竞民宿(CBD理工大学店)': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=184555122&start=1575993600000&end=1576080000000&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='
+                    '青岛YK电竞民宿(CBD理工大学店)': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=184555122&start={}&end={}&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='.format(start,end)
                     + encode_token('青岛YK电竞民宿(CBD理工大学店)'),
-                    '青岛YK电竞民宿(崂山大拇指广场店)': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=193716496&start=1575993600000&end=1576080000000&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='
+                    '青岛YK电竞民宿(崂山大拇指广场店)': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=193716496&start={}&end={}&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='.format(start,end)
                     + encode_token('青岛YK电竞民宿(崂山大拇指广场店)'),
-                    'TOP电竞酒店': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=946097146&start=1575993600000&end=1576080000000&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='
+                    'TOP电竞酒店': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=946097146&start={}&end={}&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='.format(start,end)
                     + encode_token('TOP电竞酒店'),
-                    'Teamwork电竞酒店': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=191821115&start=1575993600000&end=1576080000000&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='
+                    'Teamwork电竞酒店': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=191821115&start={}&end={}&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='.format(start,end)
                     + encode_token('Teamwork电竞酒店'),
-                    '艾克威电竞酒店': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=191996605&start=1575993600000&end=1576080000000&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='
+                    '艾克威电竞酒店': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=191996605&start={}&end={}&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='.format(start,end)
                     + encode_token('艾克威电竞酒店'),
-                    '玩家国度电竞酒店': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=192911157&start=1575993600000&end=1576080000000&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='
+                    '玩家国度电竞酒店': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=192911157&start={}&end={}&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='.format(start,end)
                     + encode_token('玩家国度电竞酒店'),
-                    'SOLO电竞酒店': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=193250283&start=1575993600000&end=1576080000000&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='
+                    'SOLO电竞酒店': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=193250283&start={}&end={}&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='.format(start,end)
                     + encode_token('SOLO电竞酒店'),
-                    'Online电竞酒店': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=1694962376&start=1575993600000&end=1576080000000&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='
+                    'Online电竞酒店': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=1694962376&start={}&end={}&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='.format(start,end)
                     + encode_token('Online电竞酒店'),
-                    'Galaxy电竞民宿': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=513149047&start=1575993600000&end=1576080000000&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='
+                    'Galaxy电竞民宿': 'https://ihotel.meituan.com/productapi/v2/prepayList?type=1&utm_medium=PC&version_name=7.3.0&poiId=513149047&start={}&end={}&uuid=F0D5B728D450BCCAD481D491F7C017D98C5A255486B48BFCEABBB345E5A9E2F2&_token='.format(start,end)
                     + encode_token('Galaxy电竞民宿'),
 
 
@@ -121,7 +121,6 @@ class GamehotelSpider(scrapy.Spider):
         item = GameHotelItem()
         hotel_name = response.meta['hotel_name']
         print('酒店名称:',hotel_name)
-        # hotel_name = '铂宿电竞酒店'
         data = json.loads(response.body)
         print(data)
         for i in data['mergeList']['data']:
@@ -132,9 +131,6 @@ class GamehotelSpider(scrapy.Spider):
             if status == None:
                 status = '预订'
             print('满房情况',status)
-
-
-
 
             time = {
                 '1': '周一',

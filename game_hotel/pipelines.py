@@ -8,7 +8,7 @@ import pymysql
 
 class GameHotelPipeline(object):
     def process_item(self, item, spider):
-        conn = pymysql.connect(host="106.13.169.200", user="root", passwd="", db="game_hotel")
+        conn = pymysql.connect(host="106.13.169.200", user="root", passwd="fool123000!", db="game_hotel")
         cursor = conn.cursor()
         insert_Time = ('').join(item['Time'])
         room_type = ('').join(item['room_type'])
