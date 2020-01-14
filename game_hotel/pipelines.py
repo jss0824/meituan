@@ -96,7 +96,7 @@ class GameHotelPipeline(object):
             conn.close()
             return item
         elif hotel_name == 'Online电竞酒店':
-            sql = """insert into SOLO电竞酒店(insert_Time,room_type,status) values ('%s','%s','%s') """ % (
+            sql = """insert into Online电竞酒店(insert_Time,room_type,status) values ('%s','%s','%s') """ % (
                 insert_Time, room_type, status)
             print("正在存入数据库。。。。。。。。。。。。")
             cursor.execute(sql)
@@ -104,7 +104,7 @@ class GameHotelPipeline(object):
             conn.close()
             return item
         elif hotel_name == 'Galaxy电竞民宿':
-            sql = """insert into SOLO电竞酒店(insert_Time,room_type,status) values ('%s','%s','%s') """ % (
+            sql = """insert into Galaxy电竞民宿(insert_Time,room_type,status) values ('%s','%s','%s') """ % (
                 insert_Time, room_type, status)
             print("正在存入数据库。。。。。。。。。。。。")
             cursor.execute(sql)
